@@ -92,9 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RaisedButton(
                 onPressed: () {
-                  print(user);
-                  print(password);
-                  print(instCode);
+                  Navigator.pushNamed(context, '/mainScreen', arguments: {
+                    'username': user,
+                    'password': password,
+                    'instCode': instCode
+                  });
                 },
                 child: Text(
                   'Login',
