@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:http/http.dart' as http;
 import 'package:gradecalc/helpers/request_helper.dart' as requestHelper;
-import 'dart:convert';
+
 
 class TestScreen extends StatelessWidget {
 
@@ -73,7 +70,7 @@ class TestScreen extends StatelessWidget {
                     child: RaisedButton(
                       onPressed: () async {
                         String token = await requestHelper.getToken(user: username, pass: password, instCode: instCode);
-                        requestHelper.getStudentAmi(token: token);
+                        requestHelper.getStudentAmi(token);
                       },
                       child: Text('Get studentAmi'),
                     ),

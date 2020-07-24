@@ -21,7 +21,7 @@ Future<String> getToken({String user,String pass,String instCode}) async {
   return accessToken;
 }
 
-getStudentAmi({token}) async {
+getStudentAmi(token) async {
 
   String url = 'https://paszc-faller.e-kreta.hu/mapi/api/v1/StudentAmi';
   Map<String, String> headers = {
