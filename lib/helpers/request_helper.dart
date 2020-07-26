@@ -21,7 +21,7 @@ Future<String> getToken({String user,String pass,String instCode}) async {
   return accessToken;
 }
 
-getStudentAmi(token) async {
+getEvals(token) async {
 
   String url = 'https://paszc-faller.e-kreta.hu/mapi/api/v1/StudentAmi';
   Map<String, String> headers = {
@@ -33,5 +33,5 @@ getStudentAmi(token) async {
 
   http.Response response = await http.get(url,headers: headers);
   final Map parsed = json.decode(response.body);
-
+  return parsed['Evaluations'];
 }
