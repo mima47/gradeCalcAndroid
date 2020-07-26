@@ -2,7 +2,7 @@ class Evaluation {
   final int evaluationID;
   final String type;
   final String subject;
-  final int weight;
+  final String weight;
   final int numberValue;
   final String creatingTime;
 
