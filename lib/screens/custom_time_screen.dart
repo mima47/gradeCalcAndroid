@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradecalc/ui/drawer.dart';
 
 class CustomTimeScreen extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
       appBar: AppBar(
         title: Text('Custom time period'),
       ),
+      drawer: MainDrawer(),
     );
   }
 }
