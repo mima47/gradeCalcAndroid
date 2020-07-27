@@ -122,7 +122,6 @@ Future<int>calculate(dateFrom, dateTo) async {
       "subject NOT IN ('Művészetek', 'Testnevelés','Testnevelés és sport','Művészetek: zeneművészet')"
       "AND creatingTime BETWEEN '$dateFrom' AND '$dateTo' AND numberValue IN ('5', '4', '1')"
       "AND type IN ('MidYear')");
-  print(maps.length);
   try {
     List<int> moneyValues = [];
     for (var i=0; i<maps.length; i++){
@@ -157,8 +156,6 @@ Future<int>calculate(dateFrom, dateTo) async {
     }
 
     var sum = moneyValues.reduce((a, b) => a + b);
-    print(sum);
-    print(moneyValues);
     return sum;
   } catch (e) {
     return 0;
