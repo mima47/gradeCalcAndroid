@@ -189,11 +189,6 @@ class AddUserScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                RaisedButton(
-                  onPressed: ()async{
-                    print(await dbhelper.users());
-                  },
-                )
               ],
             )
           ],
