@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:gradecalc/models/money.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:gradecalc/models/evaulation.dart';
@@ -37,6 +38,41 @@ createdbUser () async {
     version: 1,
   );
   return database;
+}
+
+createdbMoney() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = openDatabase(
+
+    join(await getDatabasesPath(), 'moneyVals.db'),
+    onCreate: (db, version){
+      return db.execute(
+        "CREATE TABLE values(id INTEGER PRIMARY KEY AUTOINCREMENT, moneyVal TEXT,"
+            "timePeriod TEXT)",
+      );
+    },
+
+    version: 1,
+  );
+  return database;
+}
+
+insertMoneyVal(Money money) async {
+  final Database db = await createdbMoney();
+
+  await db.insert(
+    'values',
+    money.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<List<Map<String, dynamic>>> queryValue(Money money) async {
+  final Database db = await createdbMoney();
+  String timePeriod = money.timePeriod;
+
+  final List<Map<String, dynamic>> value = await db.rawQuery('SELECT moneyVal FROM values WHERE timePeriod=$timePeriod');
+  return value;
 }
 
 Future<void> insertUser(User user) async {
