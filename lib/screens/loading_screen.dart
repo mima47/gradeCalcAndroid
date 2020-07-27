@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/helpers/request_helper.dart' as requestHelper;
 import 'package:gradecalc/models/evaulation.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -52,7 +53,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
           if (snapshot.hasData) {
             return Text(snapshot.data);
           } else {
-            return CircularProgressIndicator();
+            return Scaffold(
+              backgroundColor: Colors.grey[800],
+              body: SpinKitFadingCircle(
+                color: Colors.white,
+                size: 50,
+              ),
+            );
           }
         });
   }
