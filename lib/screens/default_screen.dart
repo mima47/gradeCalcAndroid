@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradecalc/globals.dart';
-import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
+import 'package:gradecalc/ui/drawer.dart';
+
 
 class MainScreen extends StatefulWidget {
   @override
@@ -25,36 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Text(
-                'GradeCalc',
-                style: TextStyle(
-                  fontFamily: Globals().font,
-                  color: Colors.white,
-                  fontSize: 32
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.lightGreen
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              onTap: (){
-                dbhelper.deleteEval();
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/');
-              },
-              title: Text(
-                'Log Out'
-              ),
-            )
-          ],
-        )
-      ),
+      drawer: MainDrawer(),
       backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text('Dashboard'),
