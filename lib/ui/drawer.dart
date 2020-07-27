@@ -22,7 +22,23 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              onTap: (){},
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/mainScreen');
+              },
+              leading: Icon(Icons.dashboard),
+              title: Text(
+                'Dashboard',
+                style: TextStyle(
+                    fontFamily: Globals().font
+                ),
+              ),
+            ),
+            ListTile(
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/customTimeScreen');
+              },
               leading: Icon(Icons.date_range),
               title: Text(
                 'Custom time period',
