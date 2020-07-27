@@ -3,8 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:gradecalc/models/evaulation.dart';
+import 'package:gradecalc/models/user.dart';
 
-createdb () async {
+createdbEval () async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = openDatabase(
 
@@ -12,7 +13,7 @@ createdb () async {
     onCreate: (db, version){
       return db.execute(
         "CREATE TABLE evaluations(evaluationID INTEGER PRIMARY KEY, type TEXT,"
-            "subject TEXT, weight INTEGER, numberValue INTEGER, creatingTime TEXT)",
+            "subject TEXT, weight TEXT, numberValue INTEGER, creatingTime TEXT)",
       );
     },
 
@@ -21,8 +22,50 @@ createdb () async {
   return database;
 }
 
+createdbUser () async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = openDatabase(
+
+    join(await getDatabasesPath(), 'usersDB.db'),
+    onCreate: (db, version){
+      return db.execute(
+        "CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, nick TEXT,"
+            "username TEXT, password TEXT, instCode TEXT)",
+      );
+    },
+
+    version: 1,
+  );
+  return database;
+}
+
+Future<void> insertUser(User user) async {
+  final Database db = await createdbUser();
+
+  await db.insert(
+    'users',
+    user.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<void> deleteUser(User user) async {
+  final Database db = await createdbUser();
+  String nick = user.nick;
+
+  await db.rawDelete('DELETE FROM users WHERE nick="$nick"');
+}
+
+Future<List<Map<String, dynamic>>> users() async{
+  final Database db = await createdbUser();
+
+  final List<Map<String, dynamic>> maps = await db.query('users');
+
+  return maps;
+}
+
 Future<void> insertEval(Evaluation eval) async {
-  final Database db = await createdb();
+  final Database db = await createdbEval();
 
   await db.insert(
     'evaluations',
@@ -32,7 +75,7 @@ Future<void> insertEval(Evaluation eval) async {
 }
 
 Future<List<Map<String, dynamic>>> evals() async{
-  final Database db = await createdb();
+  final Database db = await createdbEval();
 
   final List<Map<String, dynamic>> maps = await db.query('evaluations');
 
@@ -40,7 +83,7 @@ Future<List<Map<String, dynamic>>> evals() async{
 }
 
 Future<void> deleteEval() async {
-  final Database db = await createdb();
+  final Database db = await createdbEval();
 
   await db.execute('DELETE FROM evaluations');
 }
