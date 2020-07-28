@@ -3,6 +3,7 @@ import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/helpers/request_helper.dart' as requestHelper;
 import 'package:gradecalc/models/evaulation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gradecalc/models/money.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -39,10 +40,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     this.lastMonth = lastMonth.toString();
     this.currentMonth = currentMonth.toString();
 
-    Navigator.pushReplacementNamed(context, '/mainScreen', arguments: {
-      'lastMonth': this.lastMonth,
-      'currentMonth': this.currentMonth,
-    });
+    Money lastMonthMoney = Money(this.lastMonth, 'lastMonth');
+    Money currentMonthMoney = Money(this.currentMonth, 'currentMonth');
+
+    dbhelper.insertMoneyVal(lastMonthMoney);
+    dbhelper.insertMoneyVal(currentMonthMoney);
+
+    Navigator.pushReplacementNamed(context, '/mainScreen');
   }
 
   @override
