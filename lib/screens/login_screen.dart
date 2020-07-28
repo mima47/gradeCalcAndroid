@@ -110,6 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
               RaisedButton(
                 color: Colors.green,
                 onPressed: (){
+                  dbhelper.deleteMoney();
+                  dbhelper.deleteEval();
                   Navigator.pushReplacementNamed(context, '/loadingScreen', arguments: {
                     'username': selectedUser.username,
                     'password': selectedUser.password,
