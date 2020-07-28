@@ -47,7 +47,7 @@ createdbMoney() async {
     join(await getDatabasesPath(), 'moneyVals.db'),
     onCreate: (db, version){
       return db.execute(
-        "CREATE TABLE values(id INTEGER PRIMARY KEY AUTOINCREMENT, moneyVal TEXT,"
+        "CREATE TABLE money(id INTEGER PRIMARY KEY AUTOINCREMENT, value TEXT,"
             "timePeriod TEXT)",
       );
     },
@@ -61,18 +61,26 @@ insertMoneyVal(Money money) async {
   final Database db = await createdbMoney();
 
   await db.insert(
-    'values',
+    'money',
     money.toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }
 
-Future<List<Map<String, dynamic>>> queryValue(Money money) async {
+Future<String> queryValue(timePeriod) async {
   final Database db = await createdbMoney();
-  String timePeriod = money.timePeriod;
 
-  final List<Map<String, dynamic>> value = await db.rawQuery('SELECT moneyVal FROM values WHERE timePeriod=$timePeriod');
+  final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT value FROM money WHERE timePeriod="$timePeriod"');
+  String value = maps[0]['value'];
+  print(maps);
+  print(timePeriod);
   return value;
+}
+
+deleteMoney() async {
+  final Database db = await createdbMoney();
+
+  await db.execute('DELETE FROM money');
 }
 
 Future<void> insertUser(User user) async {
