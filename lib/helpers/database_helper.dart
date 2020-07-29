@@ -72,8 +72,6 @@ Future<String> queryValue(timePeriod) async {
 
   final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT value FROM money WHERE timePeriod="$timePeriod"');
   String value = maps[0]['value'];
-  print(maps);
-  print(timePeriod);
   return value;
 }
 
@@ -136,8 +134,10 @@ Future<List<Map<String, dynamic>>> givenMonth(dateFrom, dateTo) async{
   final Database db = await createdbEval();
 
   final List<Map<String, dynamic>> maps = await db.rawQuery(
-      "SELECT * FROM evaluations "
-          "WHERE creatingTime BETWEEN '$dateFrom' AND '$dateTo';"
+      "SELECT * FROM evaluations WHERE "
+          "subject NOT IN ('Művészetek', 'Testnevelés','Testnevelés és sport','Művészetek: zeneművészet')"
+          "AND creatingTime BETWEEN '$dateFrom' AND '$dateTo' AND numberValue IN ('5', '4', '1')"
+          "AND type IN ('MidYear')"
   );
 
   return maps;
