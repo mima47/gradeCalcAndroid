@@ -12,25 +12,22 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
+  List<Map<String, dynamic>> currentListOfEvals;
   Future<String> lastMonth;
   Future<String> currentMonth;
   Map data = {};
-//  String lastMonth;
-//  String currentMonth;
 
-//  @override
-//  void didChangeDependencies() {
-//    super.didChangeDependencies();
-//    this.data = ModalRoute.of(context).settings.arguments;
-//    setState(() {
-//      lastMonth = data['lastMonth'];
-//      currentMonth = data['currentMonth'];
-//    });
-//  }
+  currentMonthList() async {
+    var now = DateTime.now();
+    var dateFrom = DateTime(now.year, now.month, 1);
+    var dateTo = DateTime(now.year, now.month + 1, 1);
+    currentListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+  }
 
   void initState() {
     lastMonth = dbhelper.queryValue('lastMonth');
     currentMonth = dbhelper.queryValue('currentMonth');
+    currentMonthList();
     super.initState();
   }
 
@@ -48,37 +45,45 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           children: <Widget>[
             Card(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.attach_money),
-                    title: Text(
-                      'Current Month',
-                      style: TextStyle(
-                          fontFamily: Globals().font
+              child: InkWell(
+                splashColor: Colors.grey[200],
+                onTap: (){
+                  Navigator.pushNamed(context, '/currentMonthDetailsScreen', arguments: {
+                    'listOfEvals': currentListOfEvals
+                  });
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.attach_money),
+                      title: Text(
+                        'Current Month',
+                        style: TextStyle(
+                            fontFamily: Globals().font
+                        ),
                       ),
                     ),
-                  ),
-                  FutureBuilder(
-                      future: currentMonth,
-                      builder: (context, snapshot){
-                        if (snapshot.connectionState == ConnectionState.done){
-                          return Text(
-                            snapshot.data + 'Ft',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 42,
-                                fontFamily: Globals().font
-                            ),
-                          );
-                        } else {
-                          return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                    FutureBuilder(
+                        future: currentMonth,
+                        builder: (context, snapshot){
+                          if (snapshot.connectionState == ConnectionState.done){
+                            return Text(
+                              snapshot.data + 'Ft',
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 42,
+                                  fontFamily: Globals().font
+                              ),
+                            );
+                          } else {
+                            return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                          }
                         }
-                      }
-                  ),
-                  SizedBox(height: 8,)
-                ],
+                    ),
+                    SizedBox(height: 8,)
+                  ],
+                ),
               ),
             ),
             Card(
