@@ -11,6 +11,8 @@ class CustomTimeScreen extends StatefulWidget {
 }
 
 class _CustomTimeScreenState extends State<CustomTimeScreen> {
+  List<Map<String, dynamic>> evalList;
+  Color fontColor;
   Future<int> value;
   DateTime selectedDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -43,16 +45,22 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
       });
   }
 
+  getEvalList(dateFrom, dateTo) async {
+    evalList = await dbhelper.givenMonth(dateFrom, dateTo);
+  }
+
   @override
   void initState() {
     fromDate = formatter.format(selectedDate);
     toDate = formatter.format(selectedDate);
+    getEvalList(fromDate, toDate);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     value = dbhelper.calculate(fromDate, toDate);
+    getEvalList(fromDate, toDate);
 
     return Scaffold(
       backgroundColor: Colors.grey[800],
@@ -93,36 +101,44 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
             ),
             SizedBox(height: 25),
             Card(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.attach_money),
-                    title: Text(
-                      'Money',
-                      style: TextStyle(
-                        fontFamily: Globals().font
+              child: InkWell(
+                splashColor: Colors.grey[200],
+                onTap: (){
+                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
+                    'listOfEvals': evalList
+                  });
+                },
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.attach_money),
+                      title: Text(
+                        'Money',
+                        style: TextStyle(
+                          fontFamily: Globals().font
+                        ),
                       ),
                     ),
-                  ),
-                  FutureBuilder(
-                    future: value,
-                    builder: (context, snapshot){
-                      if(snapshot.connectionState == ConnectionState.done){
-                        return Text(
-                          snapshot.data.toString() + 'Ft',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 42,
-                            fontFamily: Globals().font
-                          ),
-                        );
-                      } else {
-                        return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                    FutureBuilder(
+                      future: value,
+                      builder: (context, snapshot){
+                        if(snapshot.connectionState == ConnectionState.done){
+                          return Text(
+                            snapshot.data.toString() + 'Ft',
+                            style: TextStyle(
+                              color: fontColor = (snapshot.data < 0)? Colors.red : Colors.green,
+                              fontSize: 42,
+                              fontFamily: Globals().font
+                            ),
+                          );
+                        } else {
+                          return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                        }
                       }
-                    }
-                  ),
-                  SizedBox(height: 8,)
-                ],
+                    ),
+                    SizedBox(height: 8,)
+                  ],
+                ),
               ),
             ),
           ],
