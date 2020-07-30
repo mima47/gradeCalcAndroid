@@ -12,7 +12,9 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
+  Color fontColor;
   List<Map<String, dynamic>> currentListOfEvals;
+  List<Map<String, dynamic>> lastListOfEvals;
   Future<String> lastMonth;
   Future<String> currentMonth;
   Map data = {};
@@ -23,11 +25,18 @@ class _MainScreenState extends State<MainScreen> {
     var dateTo = DateTime(now.year, now.month + 1, 1);
     currentListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
   }
+  lastMonthList() async {
+    var now = DateTime.now();
+    var dateFrom = DateTime(now.year, now.month - 1, 1);
+    var dateTo = DateTime(now.year, now.month, 1);
+    lastListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+  }
 
   void initState() {
     lastMonth = dbhelper.queryValue('lastMonth');
     currentMonth = dbhelper.queryValue('currentMonth');
     currentMonthList();
+    lastMonthList();
     super.initState();
   }
 
@@ -48,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
               child: InkWell(
                 splashColor: Colors.grey[200],
                 onTap: (){
-                  Navigator.pushNamed(context, '/currentMonthDetailsScreen', arguments: {
+                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
                     'listOfEvals': currentListOfEvals
                   });
                 },
@@ -71,7 +80,7 @@ class _MainScreenState extends State<MainScreen> {
                             return Text(
                               snapshot.data + 'Ft',
                               style: TextStyle(
-                                  color: Colors.green,
+                                  color: fontColor = (int.parse(snapshot.data) < 0)? Colors.red : Colors.green,
                                   fontSize: 42,
                                   fontFamily: Globals().font
                               ),
@@ -87,37 +96,45 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Card(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.attach_money),
-                    title: Text(
-                      'Last Month',
-                      style: TextStyle(
-                          fontFamily: Globals().font
+              child: InkWell(
+                splashColor: Colors.grey[200],
+                onTap: (){
+                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
+                    'listOfEvals': lastListOfEvals
+                  });
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.attach_money),
+                      title: Text(
+                        'Last Month',
+                        style: TextStyle(
+                            fontFamily: Globals().font
+                        ),
                       ),
                     ),
-                  ),
-                  FutureBuilder(
-                    future: lastMonth,
-                    builder: (context, snapshot){
-                      if (snapshot.connectionState == ConnectionState.done){
-                        return Text(
-                          snapshot.data + 'Ft',
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 42,
-                              fontFamily: Globals().font
-                          ),
-                        );
-                      } else {
-                        return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                    FutureBuilder(
+                      future: lastMonth,
+                      builder: (context, snapshot){
+                        if (snapshot.connectionState == ConnectionState.done){
+                          return Text(
+                            snapshot.data + 'Ft',
+                            style: TextStyle(
+                                color: fontColor = (int.parse(snapshot.data) < 0)? Colors.red : Colors.green,
+                                fontSize: 42,
+                                fontFamily: Globals().font
+                            ),
+                          );
+                        } else {
+                          return SpinKitFadingCircle(color: Colors.white, size: 50,);
+                        }
                       }
-                    }
-                  ),
-                  SizedBox(height: 8,)
-                ],
+                    ),
+                    SizedBox(height: 8,)
+                  ],
+                ),
               ),
             ),
           ],
