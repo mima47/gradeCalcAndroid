@@ -5,11 +5,11 @@ String accessToken;
 
 Future<String> getToken({String user,String pass,String instCode}) async {
 
-  String url = "https://paszc-faller.e-kreta.hu/idp/api/v1/Token";
+  String url = "https://$instCode.e-kreta.hu/idp/api/v1/Token";
   Map<String, String> headers = {
     "Content-type":"application/x-www-form-urlencoded",
     "Accept":"application/json",
-    "User-Agent":"Kreta.Ellenorzo"
+    "User-Agent":"Kreta.Ellenorzo/2.9.8.2020012301 (Android; SM-G960F 0.0)"
   };
   String data = 'password=$pass&institute_code=$instCode&grant_type=password&client_id=919e0c1c-76a2-4646-a2fb-7085bbbf3c56&userName=$user';
 
@@ -21,9 +21,9 @@ Future<String> getToken({String user,String pass,String instCode}) async {
   return accessToken;
 }
 
-getEvals(token) async {
+getEvals(token, instCode) async {
 
-  String url = 'https://paszc-faller.e-kreta.hu/mapi/api/v1/StudentAmi';
+  String url = 'https://$instCode.e-kreta.hu/mapi/api/v1/StudentAmi';
   Map<String, String> headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/x-www-form-urlencoded',
