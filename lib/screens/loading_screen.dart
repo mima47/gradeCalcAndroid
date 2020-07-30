@@ -16,12 +16,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   getStudentAmi() async {
     Map auth = ModalRoute.of(context).settings.arguments;
+    String instCode = auth['instCode'];
     String token = await requestHelper.getToken(
         user: auth['username'],
         pass: auth['password'],
         instCode: auth['instCode']);
 
-    List data = await requestHelper.getEvals(token);
+    List data = await requestHelper.getEvals(token, instCode);
 
     for (var i = 0; i < data.length; i++) {
       Evaluation eval = Evaluation(
