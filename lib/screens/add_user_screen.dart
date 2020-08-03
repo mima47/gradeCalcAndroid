@@ -18,7 +18,6 @@ class AddUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text('Add user'),
         backgroundColor: Colors.lightGreen,
