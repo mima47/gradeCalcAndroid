@@ -3,6 +3,7 @@ import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/ui/grade_number_card.dart';
 
 class MonthDetailsScreen extends StatelessWidget {
+  List listOfEvals = [];
   Widget widget;
   FontWeight fontWeight;
   Color fontColor;
@@ -13,20 +14,22 @@ class MonthDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
-    List listOfEvals = args['listOfEvals'];
-
-    for(var i=0; i<listOfEvals.length; i++) {
-      if (listOfEvals[i]['numberValue'] == 5){
-        grade5Number++;
-      } else if (listOfEvals[i]['numberValue'] == 4){
-        grade4Number++;
-      } else {
-        grade1Number++;
+    listOfEvals = (args['listOfEvals'] == null) ? [] : args['listOfEvals'];
+    try {
+      for (var i = 0; i < listOfEvals.length; i++) {
+        if (listOfEvals[i]['numberValue'] == 5) {
+          grade5Number++;
+        } else if (listOfEvals[i]['numberValue'] == 4) {
+          grade4Number++;
+        } else {
+          grade1Number++;
+        }
       }
+    } catch (e){
+
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text('Details'),
       ),
