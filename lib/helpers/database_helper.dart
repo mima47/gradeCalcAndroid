@@ -47,7 +47,7 @@ createdbMoney() async {
     join(await getDatabasesPath(), 'moneyVals.db'),
     onCreate: (db, version){
       return db.execute(
-        "CREATE TABLE money(id INTEGER PRIMARY KEY AUTOINCREMENT, value TEXT,"
+        "CREATE TABLE money(id INTEGER PRIMARY KEY AUTOINCREMENT, value INTEGER,"
             "timePeriod TEXT)",
       );
     },
@@ -67,11 +67,12 @@ insertMoneyVal(Money money) async {
   );
 }
 
-Future<String> queryValue(timePeriod) async {
+Future<int> queryValue(timePeriod) async {
+  int value;
   final Database db = await createdbMoney();
 
   final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT value FROM money WHERE timePeriod="$timePeriod"');
-  String value = maps[0]['value'];
+  value = (maps[0]['value'] != null) ? maps[0]['value'] : 0;
   return value;
 }
 
