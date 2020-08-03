@@ -4,6 +4,7 @@ import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/screens/add_user_screen.dart';
 import 'package:gradecalc/screens/user_list_screen.dart';
+import 'package:gradecalc/ui/gradient_bg.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -67,106 +68,109 @@ class _LoginScreenState extends State<LoginScreen> {
     if (selectedUser == null){
       selectedUser = User(nick: 'No user selected', username: '', password: '', instCode: '');
     }
-    return Scaffold(
-      backgroundColor: Colors.grey[800],
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Center(
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Center(
                   child: CircleAvatar(
-                backgroundImage: AssetImage('assets/calc.jpg'),
-                radius: 128,
-              )),
-              Center(
-                child: SizedBox(height: 20),
-              ),
-              Center(
-                child: Text(
-                  'Grade Calculator',
-                  style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 40,
-                      letterSpacing: 0,
-                      color: Colors.grey[300]),
-                ),
-              ),
-              FlatButton(
-                color: Colors.grey[850],
-                onPressed: (){
-                  selectUserScreen(context);
-                },
-                child: Text(
-                  'Selected user: ${selectedUser.nick}',
-                  style: TextStyle(
-                    color: Colors.grey[300],
-                    fontFamily: Globals().font,
+                    backgroundImage: AssetImage('assets/calc.jpg'),
+                    radius: 128,
                   ),
                 ),
-              ),
-              RaisedButton(
-                color: Colors.green,
-                onPressed: (){
-                  dbhelper.deleteMoney();
-                  dbhelper.deleteEval();
-                  Navigator.pushReplacementNamed(context, '/loadingScreen', arguments: {
-                    'username': selectedUser.username,
-                    'password': selectedUser.password,
-                    'instCode': selectedUser.instCode
-                  });
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Colors.grey[300],
-                    fontFamily: Globals().font
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: RaisedButton(
-                      onPressed: (){
-                        addUserScreen(context);
-                      },
-                      child: Text(
-                        'Add User',
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontFamily: Globals().font,
-                        ),
-                      ),
-                      color: Colors.blue[600],
+                SizedBox(height: 20),
+                Center(
+                  child: Text(
+                    'Grade Calculator',
+                    style: TextStyle(
+                        fontFamily: Globals().font,
+                        fontSize: 40,
+                        letterSpacing: 0,
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                    ),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: FlatButton(
+                    onPressed: (){
+                      selectUserScreen(context);
+                    },
+                    child: Text(
+                      'Selected user: ${selectedUser.nick}',
+                      style: TextStyle(
+                        fontFamily: Globals().font,
+                      ),
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  color: Colors.green,
+                  onPressed: (){
+                    dbhelper.deleteMoney();
+                    dbhelper.deleteEval();
+                    Navigator.pushReplacementNamed(context, '/loadingScreen', arguments: {
+                      'username': selectedUser.username,
+                      'password': selectedUser.password,
+                      'instCode': selectedUser.instCode
+                    });
+                  },
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontFamily: Globals().font
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
                       child: RaisedButton(
                         onPressed: (){
-                          dbhelper.deleteUser(selectedUser);
-                          setState(() {
-                            selectedUser = User(nick: '', username: '', password: '', instCode: '');
-                          });
+                          addUserScreen(context);
                         },
                         child: Text(
-                          'Delete User',
+                          'Add User',
                           style: TextStyle(
-                            color: Colors.grey[300],
                             fontFamily: Globals().font,
                           ),
                         ),
-                        color: Colors.red,
+                        color: Colors.blue[600],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: RaisedButton(
+                          onPressed: (){
+                            dbhelper.deleteUser(selectedUser);
+                            setState(() {
+                              selectedUser = User(nick: '', username: '', password: '', instCode: '');
+                            });
+                          },
+                          child: Text(
+                            'Delete User',
+                            style: TextStyle(
+                              fontFamily: Globals().font,
+                            ),
+                          ),
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
