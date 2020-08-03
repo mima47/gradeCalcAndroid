@@ -47,6 +47,19 @@ class MainDrawer extends StatelessWidget {
                 ),
               ),
             ),
+            ListTile(
+              leading: Icon(Icons.assessment),
+              title: Text(
+                'Statistics',
+                style: TextStyle(
+                  fontFamily: Globals().font,
+                ),
+              ),
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/statScreen');
+              },
+            ),
             Divider(color: Colors.grey[500]),
             ListTile(
               leading: Icon(Icons.exit_to_app),
@@ -62,7 +75,7 @@ class MainDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold
                 ),
               ),
-            )
+            ),
           ],
         )
     );
