@@ -11,8 +11,8 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  dynamic lastMonth;
-  dynamic currentMonth;
+  int lastMonth;
+  int currentMonth;
 
   getStudentAmi() async {
     Map auth = ModalRoute.of(context).settings.arguments;
@@ -38,8 +38,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     int lastMonth = await dbhelper.lastMonth();
     int currentMonth = await dbhelper.currentMonth();
 
-    this.lastMonth = lastMonth.toString();
-    this.currentMonth = currentMonth.toString();
+    this.lastMonth = lastMonth;
+    this.currentMonth = currentMonth;
 
     Money lastMonthMoney = Money(this.lastMonth, 'lastMonth');
     Money currentMonthMoney = Money(this.currentMonth, 'currentMonth');
@@ -59,9 +59,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
             return Text(snapshot.data);
           } else {
             return Scaffold(
-              backgroundColor: Colors.grey[800],
               body: SpinKitFadingCircle(
-                color: Colors.white,
+                color: Colors.grey,
                 size: 50,
               ),
             );
