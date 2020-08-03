@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/ui/drawer.dart';
+import 'package:gradecalc/ui/money_card.dart';
 import 'package:intl/intl.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 
@@ -29,6 +29,7 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
       setState(() {
         String formatted = formatter.format(picked);
         fromDate = formatted;
+        getEvalList(fromDate, toDate);
       });
   }
 
@@ -42,11 +43,15 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
       setState(() {
         String formatted = formatter.format(picked);
         toDate = formatted;
+        getEvalList(fromDate, toDate);
       });
   }
 
   getEvalList(dateFrom, dateTo) async {
-    evalList = await dbhelper.givenMonth(dateFrom, dateTo);
+    List evallist = await dbhelper.givenMonth(dateFrom, dateTo);
+    setState(() {
+      this.evalList = evallist;
+    });
   }
 
   @override
@@ -60,10 +65,8 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
   @override
   Widget build(BuildContext context) {
     value = dbhelper.calculate(fromDate, toDate);
-    getEvalList(fromDate, toDate);
 
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text('Custom time period'),
       ),
@@ -73,74 +76,47 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            FlatButton(
-              onPressed: (){
-                _selectFromDate(context);
-              },
-              color: Colors.grey[850],
-              child: Text(
-                'From: ' + fromDate.toString(),
-                style: TextStyle(
-                  fontFamily: Globals().font,
-                  color: Colors.grey[300]
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: FlatButton(
+                onPressed: (){
+                  _selectFromDate(context);
+                },
+                child: Text(
+                  'From: ' + fromDate.toString(),
+                  style: TextStyle(
+                    fontFamily: Globals().font,
+                  ),
                 ),
               ),
             ),
-            FlatButton(
-              onPressed: (){
-                _selectToDate(context);
-              },
-              color: Colors.grey[850],
-              child: Text(
-                'To: ' + toDate,
-                style: TextStyle(
-                    fontFamily: Globals().font,
-                    color: Colors.grey[300]
+            SizedBox(height: 15,),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(10.0)
+              ),
+              child: FlatButton(
+                onPressed: (){
+                  _selectToDate(context);
+                },
+                child: Text(
+                  'To: ' + toDate,
+                  style: TextStyle(
+                      fontFamily: Globals().font,
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 25),
-            Card(
-              child: InkWell(
-                splashColor: Colors.grey[200],
-                onTap: (){
-                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
-                    'listOfEvals': evalList
-                  });
-                },
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.attach_money),
-                      title: Text(
-                        'Money',
-                        style: TextStyle(
-                          fontFamily: Globals().font
-                        ),
-                      ),
-                    ),
-                    FutureBuilder(
-                      future: value,
-                      builder: (context, snapshot){
-                        if(snapshot.connectionState == ConnectionState.done){
-                          return Text(
-                            snapshot.data.toString() + 'Ft',
-                            style: TextStyle(
-                              color: fontColor = (snapshot.data < 0)? Colors.red : Colors.green,
-                              fontSize: 42,
-                              fontFamily: Globals().font
-                            ),
-                          );
-                        } else {
-                          return SpinKitFadingCircle(color: Colors.white, size: 50,);
-                        }
-                      }
-                    ),
-                    SizedBox(height: 8,)
-                  ],
-                ),
-              ),
-            ),
+            MoneyCard(
+              cardTitle: 'Money',
+              listOfEvals: this.evalList,
+              moneyValue: value,
+            )
           ],
         ),
       ),
