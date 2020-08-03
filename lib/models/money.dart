@@ -1,5 +1,5 @@
 class Money {
-  String value;
+  int value;
   String timePeriod;
 
   Money(this.value, this.timePeriod);
