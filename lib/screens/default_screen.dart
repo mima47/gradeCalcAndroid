@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/ui/drawer.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
+import 'package:gradecalc/ui/money_card.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -15,8 +14,8 @@ class _MainScreenState extends State<MainScreen> {
   Color fontColor;
   List<Map<String, dynamic>> currentListOfEvals;
   List<Map<String, dynamic>> lastListOfEvals;
-  Future<String> lastMonth;
-  Future<String> currentMonth;
+  Future<int> lastMonth;
+  Future<int> currentMonth;
   Map data = {};
 
   currentMonthList() async {
@@ -44,7 +43,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainDrawer(),
-      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text('Dashboard'),
         backgroundColor: Colors.lightGreen,
@@ -53,90 +51,16 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Card(
-              child: InkWell(
-                splashColor: Colors.grey[200],
-                onTap: (){
-                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
-                    'listOfEvals': currentListOfEvals
-                  });
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.attach_money),
-                      title: Text(
-                        'Current Month',
-                        style: TextStyle(
-                            fontFamily: Globals().font
-                        ),
-                      ),
-                    ),
-                    FutureBuilder(
-                        future: currentMonth,
-                        builder: (context, snapshot){
-                          if (snapshot.connectionState == ConnectionState.done){
-                            return Text(
-                              snapshot.data + 'Ft',
-                              style: TextStyle(
-                                  color: fontColor = (int.parse(snapshot.data) < 0)? Colors.red : Colors.green,
-                                  fontSize: 42,
-                                  fontFamily: Globals().font
-                              ),
-                            );
-                          } else {
-                            return SpinKitFadingCircle(color: Colors.white, size: 50,);
-                          }
-                        }
-                    ),
-                    SizedBox(height: 8,)
-                  ],
-                ),
-              ),
+            MoneyCard(
+              cardTitle: 'Current Month',
+              listOfEvals: currentListOfEvals,
+              moneyValue: currentMonth,
             ),
-            Card(
-              child: InkWell(
-                splashColor: Colors.grey[200],
-                onTap: (){
-                  Navigator.pushNamed(context, '/monthDetailsScreen', arguments: {
-                    'listOfEvals': lastListOfEvals
-                  });
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.attach_money),
-                      title: Text(
-                        'Last Month',
-                        style: TextStyle(
-                            fontFamily: Globals().font
-                        ),
-                      ),
-                    ),
-                    FutureBuilder(
-                      future: lastMonth,
-                      builder: (context, snapshot){
-                        if (snapshot.connectionState == ConnectionState.done){
-                          return Text(
-                            snapshot.data + 'Ft',
-                            style: TextStyle(
-                                color: fontColor = (int.parse(snapshot.data) < 0)? Colors.red : Colors.green,
-                                fontSize: 42,
-                                fontFamily: Globals().font
-                            ),
-                          );
-                        } else {
-                          return SpinKitFadingCircle(color: Colors.white, size: 50,);
-                        }
-                      }
-                    ),
-                    SizedBox(height: 8,)
-                  ],
-                ),
-              ),
-            ),
+            MoneyCard(
+              cardTitle: 'Last Month',
+              listOfEvals: lastListOfEvals,
+              moneyValue: lastMonth,
+            )
           ],
         )
       ),
