@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradecalc/globals.dart';
+import 'package:gradecalc/ui/doubleBack.dart';
 import 'package:gradecalc/ui/drawer.dart';
 import 'package:gradecalc/ui/money_card.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +67,7 @@ class _CustomTimeScreenState extends State<CustomTimeScreen> {
   Widget build(BuildContext context) {
     value = dbhelper.calculate(fromDate, toDate);
 
-    return Scaffold(
+    return DoubleBackScaffold(
       appBar: AppBar(
         title: Text('Custom time period'),
       ),

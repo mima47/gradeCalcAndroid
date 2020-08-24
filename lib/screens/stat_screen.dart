@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradecalc/ui/doubleBack.dart';
 import 'package:gradecalc/ui/drawer.dart';
 
 class StatScreen extends StatefulWidget {
@@ -9,7 +10,7 @@ class StatScreen extends StatefulWidget {
 class _StatScreenState extends State<StatScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DoubleBackScaffold(
       appBar: AppBar(
         title: Text('Statistics'),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradecalc/ui/doubleBack.dart';
 import 'package:gradecalc/ui/drawer.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/ui/money_card.dart';
@@ -41,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DoubleBackScaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Dashboard'),

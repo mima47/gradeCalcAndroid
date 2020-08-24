@@ -4,6 +4,7 @@ import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/screens/add_user_screen.dart';
 import 'package:gradecalc/screens/user_list_screen.dart';
+import 'package:gradecalc/ui/doubleBack.dart';
 import 'package:gradecalc/ui/gradient_bg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       selectedUser = User(nick: 'No user selected', username: '', password: '', instCode: '');
     }
     return GradientBackground(
-      child: Scaffold(
+      child: DoubleBackScaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: Padding(

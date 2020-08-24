@@ -57,7 +57,7 @@ class MainDrawer extends StatelessWidget {
               ),
               onTap: (){
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/statScreen');
+                Navigator.pushReplacementNamed(context, '/statScreen');
               },
             ),
             Divider(color: Colors.grey[500]),
@@ -66,7 +66,7 @@ class MainDrawer extends StatelessWidget {
               onTap: (){
                 dbhelper.deleteEval();
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/');
               },
               title: Text(
                 'Log Out',
