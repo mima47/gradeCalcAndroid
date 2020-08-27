@@ -35,3 +35,17 @@ getEvals(token, instCode) async {
   final Map parsed = json.decode(response.body);
   return parsed['Evaluations'];
 }
+
+getAverages(token, instCode) async {
+
+  String url = 'https://$instCode.e-kreta.hu/mapi/api/v1/TantargyiAtlagAmi';
+  Map<String, String> headers = {
+    'Authorization': 'Bearer $token',
+    'Accept': 'application/json',
+    'User-Agent': 'Kreta.Ellenorzo/2.9.8.2020012301 (Android; SM-G960F 0.0)'
+  };
+
+  http.Response response = await http.get(url, headers: headers);
+  final parsed = json.decode(response.body);
+  return parsed;
+}
