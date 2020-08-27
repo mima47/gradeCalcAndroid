@@ -160,6 +160,14 @@ Future<int> currentMonth() async {
   return calculate(dateFrom, dateTo);
 }
 
+Future<int> allYear() async {
+  var now = DateTime.now();
+  var dateFrom = DateTime(now.year - 1);
+  var dateTo = DateTime(now.year + 1);
+
+  return calculate(dateFrom, dateTo);
+}
+
 Future<int>calculate(dateFrom, dateTo) async {
 
   final Database db = await createdbEval();
