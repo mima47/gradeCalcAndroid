@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gradecalc/ui/doubleBack.dart';
 import 'package:gradecalc/ui/drawer.dart';
+import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
+import 'package:gradecalc/ui/static_money_card.dart';
 
 class StatScreen extends StatefulWidget {
   @override
@@ -8,6 +10,14 @@ class StatScreen extends StatefulWidget {
 }
 
 class _StatScreenState extends State<StatScreen> {
+  Future<int> allYearMoneyValue;
+
+  @override
+  void initState() {
+    allYearMoneyValue = dbhelper.allYear();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DoubleBackScaffold(
@@ -19,7 +29,10 @@ class _StatScreenState extends State<StatScreen> {
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-
+            StaticMoneyCard(
+              moneyValue: allYearMoneyValue,
+              cardTitle: 'All year',
+            )
           ],
         ),
       ),
