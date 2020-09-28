@@ -39,7 +39,7 @@ class _GradeAveragesScreenState extends State<GradeAveragesScreen> {
                     itemBuilder: (_, index){
                       return GradeNumberCard(
                           name: snapshot.data[index]['subject'],
-                          numberOfGrades: snapshot.data[index]['value'].toString() == 'null' ? '¯\\_(ツ)_/¯' : snapshot.data[index]['value'],
+                          numberOfGrades: snapshot.data[index]['value'].toString() == 'null' ? '¯\\_(ツ)_/¯' : snapshot.data[index]['value'].toString(),
                         );
                     },
                   ),
