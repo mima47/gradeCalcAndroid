@@ -23,13 +23,15 @@ class _MainScreenState extends State<MainScreen> {
     var now = DateTime.now();
     var dateFrom = DateTime(now.year, now.month, 1);
     var dateTo = DateTime(now.year, now.month + 1, 1);
-    currentListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+    this.currentListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+    setState(() {});
   }
   lastMonthList() async {
     var now = DateTime.now();
     var dateFrom = DateTime(now.year, now.month - 1, 1);
     var dateTo = DateTime(now.year, now.month, 1);
-    lastListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+    this.lastListOfEvals = await dbhelper.givenMonth(dateFrom, dateTo);
+    setState(() {});
   }
 
   void initState() {

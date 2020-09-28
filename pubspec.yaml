@@ -29,6 +29,7 @@ dependencies:
   flutter_launcher_icons: any
   flutter_spinkit: ^4.1.2
   double_back_to_close_app: ^1.2.0
+  intl: ^0.16.1
 
 flutter_icons:
   android: true
