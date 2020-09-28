@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradecalc/helpers/database_helper.dart' as dbhelper;
 import 'package:gradecalc/helpers/request_helper.dart' as requestHelper;
+import 'package:gradecalc/models/average.dart';
 import 'package:gradecalc/models/evaulation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gradecalc/models/money.dart';
@@ -31,7 +32,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
           subject: data[i]['Subject'],
           weight: data[i]['Weight'],
           numberValue: data[i]['NumberValue'],
-          creatingTime: data[i]['CreatingTime']);
+          creatingTime: data[i]['CreatingTime']
+      );
       dbhelper.insertEval(eval);
     }
 
@@ -47,6 +49,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     dbhelper.insertMoneyVal(lastMonthMoney);
     dbhelper.insertMoneyVal(currentMonthMoney);
 
+    List averages = await requestHelper.getAverages(token, instCode);
+
+    for (var i = 0; i < averages.length; i++){
+      Average average = Average(
+        subject: averages[i]['Subject'],
+        value: averages[i]['Value']
+      );
+      await dbhelper.insertAverages(average);
+    }
     Navigator.pushReplacementNamed(context, '/mainScreen');
   }
 

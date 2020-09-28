@@ -60,9 +60,23 @@ class MainDrawer extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/statScreen');
               },
             ),
+            Divider(color: Colors.grey,),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text(
+                'Grade Averages',
+                style: TextStyle(
+                  fontFamily: Globals().font,
+                ),
+              ),
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/gradeAveragesScreen');
+              },
+            ),
             Divider(color: Colors.grey[500]),
             ListTile(
-              leading: Icon(Icons.exit_to_app),
+              leading: Icon(Icons.exit_to_app, color: Colors.red,),
               onTap: (){
                 dbhelper.deleteEval();
                 Navigator.pop(context);
@@ -71,8 +85,9 @@ class MainDrawer extends StatelessWidget {
               title: Text(
                 'Log Out',
                 style: TextStyle(
-                    fontFamily: Globals().font,
-                    fontWeight: FontWeight.bold
+                  fontFamily: Globals().font,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradecalc/globals.dart';
+import 'package:gradecalc/screens/grade_averages_screen.dart';
 
 import 'package:gradecalc/screens/month_details_screen.dart';
 import 'package:gradecalc/screens/custom_time_screen.dart';
@@ -18,6 +19,7 @@ void main() => runApp(MaterialApp(
     '/addUserScreen': (context) => AddUserScreen(),
     '/customTimeScreen': (context) => CustomTimeScreen(),
     '/monthDetailsScreen': (context) => MonthDetailsScreen(),
+    '/gradeAveragesScreen': (context) => GradeAveragesScreen(),
   },
   theme: ThemeData(
     primaryColor: Colors.lightGreen,

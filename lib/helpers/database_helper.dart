@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:gradecalc/models/average.dart';
 import 'package:gradecalc/models/money.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -57,6 +58,21 @@ createdbMoney() async {
   return database;
 }
 
+createdbAverages() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'averages.db'),
+    onCreate: (db, version){
+      return db.execute(
+          "CREATE TABLE averages(id INTEGER PRIMARY KEY AUTOINCREMENT, value DOUBLE,"
+              "subject TEXT)"
+      );
+    },
+    version: 1
+  );
+  return database;
+}
+
 insertMoneyVal(Money money) async {
   final Database db = await createdbMoney();
 
@@ -65,6 +81,25 @@ insertMoneyVal(Money money) async {
     money.toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
+}
+
+insertAverages(Average average) async {
+  final Database db = await createdbAverages();
+
+  await db.insert('averages', average.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+}
+
+Future<List<Map<String, dynamic>>> queryAverages() async {
+  final Database db = await createdbAverages();
+
+  final averages = await db.query('averages');
+  return averages;
+}
+
+deleteAverages() async {
+  final Database db = await createdbAverages();
+
+  await db.execute('DELETE FROM averages');
 }
 
 Future<int> queryValue(timePeriod) async {
@@ -192,7 +227,6 @@ Future<int>calculate(dateFrom, dateTo) async {
 
     isDouble = (eval.weight == '200%') ? true : false;
     numberValue = eval.numberValue;
-
     int value = 100;
 
     value *= numberValue;

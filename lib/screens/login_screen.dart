@@ -119,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: (){
                     dbhelper.deleteMoney();
                     dbhelper.deleteEval();
+                    dbhelper.deleteAverages();
                     Navigator.pushReplacementNamed(context, '/loadingScreen', arguments: {
                       'username': selectedUser.username,
                       'password': selectedUser.password,
