@@ -43,15 +43,6 @@ class _MonthDetailsScreenState extends State<MonthDetailsScreen> {
       appBar: AppBar(
         title: Text('Details'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: fabIcon,
-        onPressed: (){
-          setState(() {
-            isReversed = !isReversed;
-            fabIcon = (isReversed == true ? Icon(Icons.arrow_drop_down) : Icon(Icons.arrow_drop_up));
-          });
-        },
-      ),
       body: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -123,6 +114,23 @@ class _MonthDetailsScreenState extends State<MonthDetailsScreen> {
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0, 7, 5, 0),
+                  child: FloatingActionButton(
+                    child: fabIcon,
+                    onPressed: (){
+                      setState(() {
+                        isReversed = !isReversed;
+                        fabIcon = (isReversed == true ? Icon(Icons.arrow_drop_down) : Icon(Icons.arrow_drop_up));
+                      });
+                    },
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),
