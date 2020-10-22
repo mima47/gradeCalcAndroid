@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: (){
                                       dbhelper.deleteUser(selectedUser);
                                       setState(() {
-                                        selectedUser = User(nick: '', username: '', password: '', instCode: '');
+                                        selectedUser = User(nick: 'No user selected', username: '', password: '', instCode: '');
                                       });
                                       Navigator.of(context).pop();
                                     },
