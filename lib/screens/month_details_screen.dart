@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:gradecalc/globals.dart';
 import 'package:gradecalc/ui/grade_number_card.dart';
 
-class MonthDetailsScreen extends StatelessWidget {
+class MonthDetailsScreen extends StatefulWidget {
+  @override
+  _MonthDetailsScreenState createState() => _MonthDetailsScreenState();
+}
+
+class _MonthDetailsScreenState extends State<MonthDetailsScreen> {
   List listOfEvals = [];
-  Widget widget;
   FontWeight fontWeight;
   Color fontColor;
   int grade5Number = 0;
   int grade4Number = 0;
   int grade1Number = 0;
+  Icon fabIcon = Icon(Icons.arrow_drop_down);
+  bool isReversed = true;
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
     Map args = ModalRoute.of(context).settings.arguments;
     listOfEvals = (args['listOfEvals'] == null) ? [] : args['listOfEvals'];
     try {
@@ -28,10 +34,23 @@ class MonthDetailsScreen extends StatelessWidget {
     } catch (e){
 
     }
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: fabIcon,
+        onPressed: (){
+          setState(() {
+            isReversed = !isReversed;
+            fabIcon = (isReversed == true ? Icon(Icons.arrow_drop_down) : Icon(Icons.arrow_drop_up));
+          });
+        },
       ),
       body: Padding(
         padding: EdgeInsets.all(8.0),
@@ -71,9 +90,10 @@ class MonthDetailsScreen extends StatelessWidget {
                     scrollDirection: Axis.vertical,
                     physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
+                    reverse: isReversed,
                     itemCount: listOfEvals.length,
                     separatorBuilder: (BuildContext context, int index) => const Divider(color: Colors.grey),
-                    itemBuilder: (BuildContext, int index){
+                    itemBuilder: (BuildContext context, int index){
                       return ListTile(
                         title: Text(
                           listOfEvals[index]['subject'],
