@@ -154,10 +154,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: RaisedButton(
                           onPressed: (){
-                            dbhelper.deleteUser(selectedUser);
-                            setState(() {
-                              selectedUser = User(nick: '', username: '', password: '', instCode: '');
-                            });
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Delete User?'),
+                                content: Text('Are you sure you want to delete this user?'),
+                                actions: [
+                                  FlatButton(
+                                    child: Text('Cancel'),
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: Text(
+                                      'OK',
+                                      style: TextStyle(
+                                        color: Colors.red
+                                      ),
+                                    ),
+                                    onPressed: (){
+                                      dbhelper.deleteUser(selectedUser);
+                                      setState(() {
+                                        selectedUser = User(nick: '', username: '', password: '', instCode: '');
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              ),
+                              barrierDismissible: false
+                            );
                           },
                           child: Text(
                             'Delete User',
