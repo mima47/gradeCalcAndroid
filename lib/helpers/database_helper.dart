@@ -207,7 +207,7 @@ Future<int>calculate(dateFrom, dateTo) async {
 
   final Database db = await createdbEval();
   final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM evaluations WHERE "
-      "subject NOT IN ('Művészetek', 'Testnevelés','Testnevelés és sport','Művészetek: zeneművészet')"
+      "subject NOT IN ('Művészetek', 'Testnevelés','Testnevelés és sport','Művészetek: ének-zene')"
       "AND creatingTime BETWEEN '$dateFrom' AND '$dateTo' AND numberValue IN ('5', '4', '1')"
       "AND type IN ('MidYear')");
   try {
